@@ -17,6 +17,10 @@ package eu.stratosphere.tutorial.task3;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MatchStub;
 import eu.stratosphere.pact.common.type.PactRecord;
+import eu.stratosphere.pact.common.type.base.PactDouble;
+import eu.stratosphere.pact.common.type.base.PactInteger;
+import eu.stratosphere.pact.common.type.base.PactString;
+import eu.stratosphere.tutorial.util.Util;
 
 /**
  * This matcher computes the tf-idf weight of every term by combining the results of the previous document and term
@@ -33,5 +37,15 @@ public class TfIdfMatcher extends MatchStub {
 	@Override
 	public void match(PactRecord dfRecord, PactRecord tfRecord, Collector<PactRecord> collector) throws Exception {
 		// Implement your solution here
+		if(dfRecord.getField(0, PactString.class).equals(tfRecord.getField(1, PactString.class))){
+			int df = dfRecord.getField(1, PactInteger.class).getValue();
+			int tf = tfRecord.getField(2, PactInteger.class).getValue();
+			double cal = tf * Math.log(Util.NUM_DOCUMENTS / df);
+			PactDouble tf_idf = new PactDouble(cal);
+			PactRecord record = tfRecord.createCopy();
+			record.setField(2, tf_idf);
+			collector.collect(record);
+					
+		}
 	}
 }

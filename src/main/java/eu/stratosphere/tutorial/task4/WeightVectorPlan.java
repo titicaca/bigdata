@@ -106,7 +106,8 @@ public class WeightVectorPlan implements PlanAssembler, PlanAssemblerDescription
 
 		// Output
 		// Replace this with your own path, e.g. "file:///path/to/results/"
-		String outputPath = Util.createTempDir("results");
+//		String outputPath = Util.createTempDir("results");
+		String outputPath = "file://"+System.getProperty("user.dir") +"/results_3";
 
 		// Results should be: same Tf-Idf values as in task 3 as a WeightVector per Document
 

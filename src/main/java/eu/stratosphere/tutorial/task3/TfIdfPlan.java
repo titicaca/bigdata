@@ -103,7 +103,8 @@ public class TfIdfPlan implements PlanAssembler, PlanAssemblerDescription {
 
 		// Output
 		// Replace this with your own path, e.g. "file:///path/to/results/"
-		String outputPath = Util.createTempDir("results");
+//		String outputPath = Util.createTempDir("results");
+		String outputPath = "file://"+System.getProperty("user.dir") +"/results_3";
 
 		// Results should be:
 		//

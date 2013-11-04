@@ -15,12 +15,17 @@
 package eu.stratosphere.tutorial.task1;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import eu.stratosphere.pact.common.contract.ReduceContract.Combinable;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.ReduceStub;
 import eu.stratosphere.pact.common.stubs.StubAnnotation.ConstantFields;
 import eu.stratosphere.pact.common.type.PactRecord;
+import eu.stratosphere.pact.common.type.base.PactInteger;
+import eu.stratosphere.pact.common.type.base.PactString;
 
 /**
  * This reducer is part of the document frequency computation. See {@link DocumentFrequencyMapper} for an explanation
@@ -33,7 +38,8 @@ import eu.stratosphere.pact.common.type.PactRecord;
 public class DocumentFrequencyReducer extends ReduceStub {
 
 	// ----------------------------------------------------------------------------------------------------------------
-
+	//private final PactInteger cnt = new PactInteger();
+	
 	/**
 	 * Adds up all (term, 1) records emitted by {@link DocumentFrequencyMapper} grouped for each term.
 	 * <p>
@@ -43,5 +49,46 @@ public class DocumentFrequencyReducer extends ReduceStub {
 	@Override
 	public void reduce(Iterator<PactRecord> records, Collector<PactRecord> collector) throws Exception {
 		// Implement your solution here
+//		java.util.Map<String, Integer> map = new java.util.HashMap<String, Integer>();
+//		boolean isExist = true;
+//		while(records.hasNext()){
+//			PactRecord record = records.next();
+//			String word = record.getField(0, PactString.class).toString();
+//			if(!map.containsKey(word)){
+//				isExist = false;
+//				map.put(word, 1);
+//			}else{
+//				isExist = true;
+//				map.put(word, (map.get(word)+1));
+//			}		
+//		}
+//		Iterator iter = map.entrySet().iterator();
+//		while(iter.hasNext()){
+//			Map.Entry<String, Integer> entry = (Entry<String, Integer>) iter.next();
+//			PactRecord record = new PactRecord();
+//			record.setField(0, new PactString(entry.getKey()));
+//			record.setField(1, new PactInteger(entry.getValue()));
+//			collector.collect(record);
+//		}
+//		while(records.hasNext()){
+//			PactRecord record = records.next();
+//			collector.collect(record);
+//		}
+		
+		 PactRecord element = null;
+         int sum = 0;
+         while (records.hasNext()) {
+                 element = records.next();
+                 PactInteger i = element.getField(1, PactInteger.class);
+                 sum += i.getValue();
+                 //sum++;
+         }
+
+         //this.cnt.setValue(sum);
+         //element.setField(1, this.cnt);
+         element.setField(1, new PactInteger(sum));
+
+         collector.collect(element);
+
 	}
 }

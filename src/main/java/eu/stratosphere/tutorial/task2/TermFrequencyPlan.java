@@ -75,8 +75,8 @@ public class TermFrequencyPlan implements PlanAssembler, PlanAssemblerDescriptio
 
 		// Output
 		// Replace this with your own path, e.g. "file:///path/to/results/"
-		String outputPath = Util.createTempDir("results");
-
+//		String outputPath = Util.createTempDir("results");
+		String outputPath = "file://"+System.getProperty("user.dir") +"/results_2";
 		// Results should be:
 		//
 		// Document 1:

@@ -80,8 +80,8 @@ public class DocumentFrequencyPlan implements PlanAssembler, PlanAssemblerDescri
 
 		// Output
 		// Replace this with your own path, e.g. "file:///path/to/results/"
-		String outputPath = Util.createTempDir("results");
-
+//		String outputPath = Util.createTempDir("results");
+		String outputPath = "file://"+System.getProperty("user.dir") +"/results_1";
 		// Results should be:
 		// big 2
 		// hello 2

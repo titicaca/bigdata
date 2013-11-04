@@ -14,9 +14,13 @@
  **********************************************************************************************************************/
 package eu.stratosphere.tutorial.task1;
 
+import java.util.HashSet;
+
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
+import eu.stratosphere.pact.common.type.Value;
+import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
 /**
@@ -41,6 +45,9 @@ import eu.stratosphere.pact.common.type.base.PactString;
 public class DocumentFrequencyMapper extends MapStub {
 
 	// ----------------------------------------------------------------------------------------------------------------
+
+																																																																																						//	static HashSet<String> hset1 = new HashSet<String>();
+																																																																																						//	static HashSet<String> hset2 = new HashSet<String>();
 
 	/**
 	 * Splits the document into terms and emits a PactRecord (term, 1) for each term of the document.
@@ -68,7 +75,34 @@ public class DocumentFrequencyMapper extends MapStub {
 	public void map(PactRecord record, Collector<PactRecord> collector) {
 		// Document with format "docId, document contents"
 		String document = record.getField(0, PactString.class).toString();
-
+		String lineCotent = document.substring(document.indexOf(",")+1);
+		HashSet<String> hset = new HashSet<String>();
+//		if(docid == 1){
+//			hset = hset1;
+//		}else{
+//			hset = hset2;
+//		}
+		lineCotent  = lineCotent.toLowerCase();
 		// Implement your solution here
+		
+		String word = new String();
+		for(int i = 0; i < lineCotent.length(); i ++ ){
+			char c = lineCotent.charAt(i);
+			if( c >= 'a' && c <= 'z'){
+				word += c;
+			}else{
+				if(word.length() > 0){
+					if(hset.add(word)){
+						PactRecord p = new PactRecord();			
+						p.setField(0, new PactString(word));
+						p.setField(1, new PactInteger(1));
+						collector.collect(p);
+					}
+					word = new String();
+				}
+			}
+		}
+		
+		
 	}
 }
